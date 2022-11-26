@@ -7,7 +7,7 @@
 #include "card.h"
 #include "player.h"
 
-#define PLAYER_COUNT 2
+#define PLAYER_COUNT 5
 extern Player players[PLAYER_COUNT]; //initialize players
 const static char *RESET_COLOR = "\x1b[36m";
 
