@@ -19,7 +19,7 @@ typedef struct{
     char name[NAME_LENGTH];
     Hand hand; //array of card "slots" (ptrs), & points
     char selectedCard; //selected card index
-    unsigned char score; //score
+    int score; //score
 } Player;
 
 void playersInit();

@@ -20,7 +20,7 @@ void hideCards(Hand* hand ) {
 }
 
 void playersInit() {
-    players[0].score=10000000000000;//this is the dealer
+    players[0].score=100000000;//this is the dealer
     players[1].score=1000;
     players[2].score=1000;
     players[3].score=1000;
