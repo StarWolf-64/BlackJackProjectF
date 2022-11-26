@@ -8,7 +8,7 @@
 #define NAME_LENGTH 10 //# char permissible in a player name
 #define HAND_SIZE 10 // max cards in hand
 //#define ENTER 
-#define PLAYER_COUNT 2
+#define PLAYER_COUNT 5
 
 typedef struct {
     Card *cards[HAND_SIZE]; //the cards the hand holds
