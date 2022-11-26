@@ -5,7 +5,7 @@
 all: playblackjack
 
 FLAGS = -Wall -Wno-char-subscripts
-card_demo: blackjack.c card.h card.c deck.c deck.h player.c player.h
+playblackjack: blackjack.c card.h card.c deck.c deck.h player.c player.h
 	@echo 'building playblackjack.'
 	gcc -o playblackjack blackjack.c card.c deck.c player.c $(FLAGS)
 
