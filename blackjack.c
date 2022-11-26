@@ -23,13 +23,65 @@ int main(int argc, char **argv){
 	printf("Game start\n");
 
 	//game loop ending conditions
-	int gamego = 1;
-	int playersuse = 5;
-	int loopcount = 0;
+	int gamego = 1; //while loop condition statement
+	int playersuse = 2; //minimum 2 players, first player is always dealer
+	int loopcount = 0; //test code
 
 	//main game loop
 	while(gamego){
 		
+		//shuffle deck each game
+		shuffleDeck(shuffled, deck);
+
+		//game/turn loop
+		int contgame = 4;
+		int loopnum = 0;
+		while(contgame){
+			
+			//refresh continue condition
+			contgame = 4;
+
+			//deal cards:
+			//deal to dealer (First loop only until all players are fold/bust)
+			if(loopnum == 0){
+				deal(shuffled, &players[i].hand, 2);
+			}
+
+			//deal to players
+			for(int i = 1; i < playersuse; i++){
+				if(loopnum > 0){
+					deal(shuffled, &players[i].hand, 2);
+				}
+				else{
+					deal(shuffled, &players[i].hand, 1);
+				}
+
+				//test print
+				printf("Player %d's hand:\n",i);
+				printCards(players[i].hand.cards, 0, 2);
+			}
+
+			//player fold/bust condition
+			for(int i = 1; i < playersuse; i++){
+				int cardsum = 0;
+				for(int j = 0; j < 2; j++){
+					cardsum += players[i].hand.cards[j].value;
+				}
+				
+				if(cardsum > 21){
+					contgame--;
+				}
+			}
+
+			//increment loop number
+			loopnum++;
+
+			//emergency catch condition
+			if(loopnum > 5){
+				contgame = 0;
+			}
+		}
+
 		//test code
 		for(int i = 1; i < playersuse; i++){
 			//printf("player %d score = %d\n", i, players[i].score);
@@ -50,9 +102,15 @@ int main(int argc, char **argv){
 		}
 		
 		//test code
-		printf("loop iteration %d\n", loopcount);
+		//printf("loop iteration %d\n", loopcount);
 		loopcount++;
 
 	}
+
+	printf("GAME OVER\n");
+	printf("Final scores:\n");
+	for(int i = 1; i < playersuse; i++){
+        	printf("player %d score = %d\n", i, players[i].score);
+        }
 
 }
