@@ -7,6 +7,17 @@
 #include "card.h"
 #include "player.h"
 
+#define PLAYER_COUNT 2
+extern Player players[PLAYER_COUNT]; //initialize players
+const static char *RESET_COLOR = "\x1b[36m";
+
+Card deck[DECK_SIZE];
+Card *shuffled[DECK_SIZE];
+
 int main(int argc, char **argv){
+	printf("%s",RESET_COLOR); //default color
+	initCard(); // set up unicode printing
+	initDeck(deck);
+	shuffleDeck(shuffled, deck);
 	printf("make file works\n");
 }
