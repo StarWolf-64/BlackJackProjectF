@@ -8,7 +8,7 @@
 
 void initDeck(Card *deck); //create initial deck
 void shuffleDeck(Card **shuffled, Card *deck); //arrange card pointers in shuffled randomly
-void deal(Card **shuffled, Hand*,Hand*,int); //deal 6 cards from deck to each hand
+void deal(Card **shuffled, Hand*,int); //deal 6 cards from deck to each hand
 Card *cutDeck(Card **shuffled); //select a random card from startingAt, until end of deck
 Card *draw(Card **shuffled); // draw the top card
 void printRestOfDeck(Card **shuffled);
