@@ -20,6 +20,7 @@ int main(int argc, char **argv){
 	initDeck(deck);// makes the memory for the deck
 	shuffleDeck(shuffled, deck); //shuffledeck shuffles the deck
 	playersInit();
+	system("clear"); //clear console
 	printf("Game start\n");
 
 	//game loop ending conditions
@@ -30,46 +31,66 @@ int main(int argc, char **argv){
 	//main game loop
 	while(gamego){
 		
-		//shuffle deck each game
+		//shuffle deck each game and reset player values
 		shuffleDeck(shuffled, deck);
+		for(int i = 0; i < playersuse; i++){
+			players[i].hand.cardsInHand = 0;
+		}
+
+		//tracking values for loop
+		int playergo[5] = {1, 1, 1, 1, 1};
+		int scoremod[5] = {0, 0, 0, 0, 0};
 
 		//game/turn loop
-		int contgame = 4;
+		int contgame = playersuse - 1;
 		int loopnum = 0;
 		while(contgame){
 			
 			//refresh continue condition
-			contgame = 4;
+			contgame = playersuse - 1;
 
 			//deal cards:
 			//deal to dealer (First loop only until all players are fold/bust)
 			if(loopnum == 0){
-				deal(shuffled, &players[i].hand, 2);
+				deal(shuffled, &players[0].hand, 2);
 			}
 
 			//deal to players
 			for(int i = 1; i < playersuse; i++){
-				if(loopnum > 0){
+				if(loopnum == 0){
 					deal(shuffled, &players[i].hand, 2);
 				}
 				else{
-					deal(shuffled, &players[i].hand, 1);
+					Hand *hand0 = &players[i].hand;
+					hand0->cards[players[i].hand.cardsInHand] = draw(shuffled);
+					//printf("Cards: %d\n", players[i].hand.cardsInHand);
+					players[i].hand.cardsInHand++;
+					//printf("Cards NEW: %d\n", players[i].hand.cardsInHand);
 				}
 
 				//test print
 				printf("Player %d's hand:\n",i);
-				printCards(players[i].hand.cards, 0, 2);
+				printCards(players[i].hand.cards, 0, players[i].hand.cardsInHand);
 			}
 
 			//player fold/bust condition
 			for(int i = 1; i < playersuse; i++){
 				int cardsum = 0;
-				for(int j = 0; j < 2; j++){
-					cardsum += players[i].hand.cards[j].value;
+				for(int j = 0; j < players[i].hand.cardsInHand; j++){
+					cardsum += players[i].hand.cards[j]->value;
 				}
 				
-				if(cardsum > 21){
+				printf("sum: %d\n", cardsum);
+
+				if(cardsum == 21){
 					contgame--;
+					playergo[i] = 0;
+					scoremod[i] = 1;
+				}
+				else if(cardsum > 21){
+					contgame--;
+					playergo[i] = 0;
+					scoremod[i] = 0;
 				}
 			}
 
@@ -84,9 +105,14 @@ int main(int argc, char **argv){
 
 		//test code
 		for(int i = 1; i < playersuse; i++){
-			//printf("player %d score = %d\n", i, players[i].score);
-			players[i].score = players[i].score - 50;
-			//printf("player %d new score = %d\n", i, players[i].score);
+			printf("player %d score = %d\n", i, players[i].score);
+			if(scoremod[i] == 1){
+				players[i].score = players[i].score + 50;
+			}
+			else if(scoremod[i] == 0){
+				players[i].score = players[i].score - 50;
+			}
+			printf("player %d new score = %d\n", i, players[i].score);
 		}
 
 		//get sum of all player scores
@@ -102,7 +128,7 @@ int main(int argc, char **argv){
 		}
 		
 		//test code
-		//printf("loop iteration %d\n", loopcount);
+		printf("loop iteration %d\n", loopcount);
 		loopcount++;
 
 	}
