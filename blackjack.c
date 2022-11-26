@@ -17,7 +17,8 @@ Card *shuffled[DECK_SIZE];
 int main(int argc, char **argv){
 	printf("%s",RESET_COLOR); //default color
 	initCard(); // set up unicode printing
-	initDeck(deck);
-	shuffleDeck(shuffled, deck);
+	initDeck(deck);// makes the memory for the deck
+	shuffleDeck(shuffled, deck); //shuffledeck shuffles the deck
 	printf("make file works\n");
+
 }

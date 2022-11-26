@@ -20,8 +20,14 @@ void hideCards(Hand* hand ) {
 }
 
 void playersInit() {
-    players[0].score=0;
-    players[1].score=0;
-    strcpy(players[0].name,COMPUTER_NAME);
+    players[0].score=10000000000000;//this is the dealer
+    players[1].score=1000;
+    players[2].score=1000;
+    players[3].score=1000;
+    players[4].score=1000;
+    strcpy(players[0].name,COMPUTER_NAME);//this should be assumed to be the dealer
     strcpy(players[1].name,PLAYER_NAME);
+    strcpy(players[2].name,PLAYER_NAME);
+    strcpy(players[3].name,PLAYER_NAME);
+    strcpy(players[4].name,PLAYER_NAME);
 }
