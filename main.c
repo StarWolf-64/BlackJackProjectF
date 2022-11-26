@@ -7,7 +7,7 @@
 #include "card.h"
 #include "player.h"
 
-#define PLAYER_COUNT 2
+#define PLAYER_COUNT 5
 
 // For now player.c defines players, and main accesses it
 // Future - update playersInit to have parameters
@@ -34,7 +34,8 @@ int main(int argc, char **argv) {
     printf("Deck before dealing:\n");
     printRestOfDeck(shuffled); // Printing the deck makes the cards visible
     playersInit();
-    deal(shuffled, &players[0].hand,&players[1].hand,5);
+    deal(shuffled, &players[0].hand,5);//dealt for first 
+    deal(shuffled, &players[1].hand,5);//dealt for second
     printf("%s Hand:\n", players[0].name);
     printCards(players[0].hand.cards, 0, 5);
     printf("%s Hand:\n", players[1].name);

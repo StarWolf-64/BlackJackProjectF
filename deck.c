@@ -64,14 +64,12 @@ char cardIndex = 0; // This could be part of Deck
 deal cards into each hand
 alternate putting deck pointers into each hand
 */
-void deal(Card **shuffled, Hand* hand0,Hand* hand1,int hand_size) {
+void deal(Card **shuffled, Hand* hand0,int hand_size) {
     for (char i = 0; i < hand_size; i++) {
         //set the card ptr in each hand
         //increase the index in deck
         hand0->cards[i] = shuffled[cardIndex++];
         hand0->cardsInHand++; //increase number of cards
-        hand1->cards[i] = shuffled[cardIndex++];
-        hand1->cardsInHand++; // increase number of cards
     }
 }
 
