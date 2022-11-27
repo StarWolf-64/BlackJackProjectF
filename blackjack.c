@@ -85,20 +85,25 @@ int main(int argc, char **argv){
 		int contgame = playersuse - 1;
 		int loopnum = 0;//what number of loop we are on for first loop we don't want to ask for hit or fold
 		while(contgame){
+			//loop variables
+			int playersums[5] = {0, 0, 0, 0, 0}; //sum of players scores for quick access
+
 			//refresh continue condition
 			contgame = playersuse - 1;
 			if(loopnum>0){
 				for(int i=1;i<playersuse;i++){
-					printf("%s %d %s\n","Player ", i, " enter h or f for hit or fold");
-				        scanf("%s",&valueOfQ);
-					if(valueOfQ=='h'){
-						iValueOfQ=1;//update value
-						playergo[i]=iValueOfQ;//updates the value of playergo array
-
-					}
-					else{
-						 iValueOfQ=0;//update value
-						 playergo[i]=iValueOfQ;//updates the value of playergo array
+					if(playergo[i] != 0){
+						printf("%s %d %s\n","Player ", i, " enter h or f for hit or fold");
+					        scanf("%s",&valueOfQ);
+						if(valueOfQ=='h'){
+							iValueOfQ=1;//update value
+							playergo[i]=iValueOfQ;//updates the value of playergo array
+	
+						}
+						else{
+							 iValueOfQ=0;//update value
+							 playergo[i]=iValueOfQ;//updates the value of playergo array
+						}
 					}
 				}
 			}
@@ -108,21 +113,37 @@ int main(int argc, char **argv){
 			if(loopnum == 0){
 				deal(shuffled, &players[0].hand, 2);
 				remaining -= 2;
+
+				//print the dealers cards, NOTE: this is long because printing one red card and one green card is hard
 				printf("The Dealer's cards:\n");
 				Card *c = players[0].hand.cards[0];
+				Card *c2 = players[0].hand.cards[1];
 				c->hidden = 1;
 				c->selected = 1;
 				printPartOfCard(c, 0);
+				c2->hidden = 0;
+				c2->selected = 0;
+				printPartOfCard(c2, 0);
 				printf("\n");
+				c->hidden = 1;
+				c->selected = 1;
 				printPartOfCard(c, 1);
+				c2->hidden = 0;
+				c2->selected = 0;
+				printPartOfCard(c2, 1);
 				printf("\n");
+				c->hidden = 1;
+				c->selected = 1;
 				printPartOfCard(c, 2);
-				//printf("\n");
-				c->hidden = 0;
-				c->selected = 0;
+				c2->hidden = 0;
+				c2->selected = 0;
+				printPartOfCard(c2, 2);
+				printf("\n");
 				//printCards(players[0].hand.cards, 1, 2);
-				Card *c2 = players[0].hand.cards[1];
-				printCard(c2, "\n");
+				//Card *c2 = players[0].hand.cards[1];
+				//c2->hidden = 0;
+				//c2->selected = 0;
+				//printCard(c2, "\n");
 
 			}
 
@@ -154,24 +175,116 @@ int main(int argc, char **argv){
 				}
 				
 				printf("sum: %d\n", cardsum);
+				playersums[i] = cardsum;
 
 				if(cardsum == 21){
 					contgame--;
 					playergo[i] = 0;
-					scoremod[i] = 1;
+					//scoremod[i] = 1;
 				}
 				else if(cardsum > 21){
 					contgame--;
 					playergo[i] = 0;
-					scoremod[i] = 0;
+					//scoremod[i] = 0;
+				}
+				else if(cardsum < 21 && playergo[i] == 0){
+					contgame--;
 				}
 			}
 
+			//calculate dealer cards and draw if less than 16
+			int dealersum = 0;
+			if(contgame == 0){
+				//print dealers cards with revealed card
+				printf("The Dealer's cards:\n");
+				Card *c = players[0].hand.cards[0];
+				Card *c2 = players[0].hand.cards[1];
+				c->hidden = 0;
+				c->selected = 1;
+				printPartOfCard(c, 0);        
+				c2->hidden = 0;    
+				c2->selected = 0;    
+				printPartOfCard(c2, 0);   
+				printf("\n");       
+				c->hidden = 0;       
+				c->selected = 1;    
+				printPartOfCard(c, 1);    
+				c2->hidden = 0;      
+				c2->selected = 0;      
+				printPartOfCard(c2, 1);     
+				printf("\n");       
+				c->hidden = 0;    
+				c->selected = 1;    
+				printPartOfCard(c, 2);        
+				c2->hidden = 0;       
+				c2->selected = 0;    
+				printPartOfCard(c2, 2);   
+				printf("\n");
+
+				//sum the dealers cards
+				for(int i = 0; i < players[0].hand.cardsInHand; i++){
+					dealersum += players[0].hand.cards[i]->value;	
+				}
+
+				//draw until sum is greater than or equal to 16
+				while(dealersum < 16){
+					//printf("dealersum: %d\n", dealersum);
+					Hand *hand0 = &players[0].hand;   
+					hand0->cards[players[0].hand.cardsInHand] = draw(shuffled);
+					dealersum += players[0].hand.cards[players[0].hand.cardsInHand]->value;
+					players[0].hand.cardsInHand++;
+					
+				}
+
+				printf("dealersum: %d\n", dealersum);
+
+			}
+
+			//decide winner(s)
+			if(dealersum > 21){
+				//everyone wins	
+				for(int i = 1; i < playersuse; i++){
+					scoremod[i] = 1;
+				}
+				printf("Dealer Bust! All players win!\n");
+			}
+			else if(dealersum == 21){
+				//everyone loses
+				for(int i = 1; i < playersuse; i++){   
+					scoremod[i] = 0;
+				}
+				printf("Dealer has 21. All players lose.\n");
+			}
+			else if((dealersum < 21) & (contgame <= 0)){
+				//case by case basis
+				for(int i = 1; i < playersuse; i++){ 
+					if(playersums[i] == 21){
+						scoremod[i] = 2;
+						printf("Player %d has 21 and wins!\n", i);	
+					}
+					else if(playersums[i] < 21){
+						if(playersums[i] > dealersum){
+							scoremod[i] = 1;
+							printf("Player %d has a greater hand than the Dealer. Player %d wins!\n",i,i);
+						}
+						else{
+							scoremod[i] = 0;
+							printf("Player %d has a lesser hand than the Dealer. Dealer wins.\n",i);
+						}
+					}
+					else{
+						scoremod[i] = 0;
+						printf("Player %d has busted! Dealer wins.\n",i);
+					}
+				}
+			}
+
+			
 			//increment loop number
 			loopnum++;
 
 			//emergency catch condition
-			if(loopnum > 5){
+			if(loopnum > 10){
 				contgame = 0;
 			}
 
@@ -199,6 +312,10 @@ int main(int argc, char **argv){
 			}
 			else if(scoremod[i] == 0){
 				players[i].score = players[i].score - 50;
+			}
+			else if(scoremod[i] == 2){
+				//natural 21
+				players[i].score = players[i].score + (50 * 2.5);
 			}
 			printf("player %d new score = %d\n", i, players[i].score);
 		}
