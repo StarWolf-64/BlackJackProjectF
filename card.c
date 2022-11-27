@@ -52,9 +52,9 @@ int printPartOfCard(Card *card, int partOfCard) {
                     printf("%c",'A'); //Ace
                 } else if (card->type < 10){
                     printf("%d",card->type);
-                } else if (card-> type == 10) {
+                } else if (card-> type ==10 ) {
                     printf("%c",'X'); //10 is two characters and would mess things up
-                } else if (card->type == 11) {
+		} else if (card->type == 11) {
                     printf("%c",'J');
                 } else if (card->type == 12) {
                     printf("%c",'Q');

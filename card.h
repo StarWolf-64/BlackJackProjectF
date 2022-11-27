@@ -3,10 +3,9 @@
 
 #include <stdbool.h> //booleans
 
-#define JACK 11
-#define QUEEN 12
-#define KING 13
-
+#define JACK 10
+#define QUEEN 10
+#define KING 10
 /*
 card.c uses values from Suit and Walls as indices into arrays suitSymbol and WallSymbol 
 */

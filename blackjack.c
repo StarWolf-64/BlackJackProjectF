@@ -28,9 +28,11 @@ int main(int argc, char **argv){
 	int playersuse = 2; //minimum 2 players, first player is always dealer
 	int loopcount = 0; //test code
 
+
 	//main game loop
 	while(gamego){
-		
+		//if(){//
+		//}
 		//shuffle deck each game and reset player values
 		shuffleDeck(shuffled, deck);
 		for(int i = 0; i < playersuse; i++){
@@ -38,16 +40,32 @@ int main(int argc, char **argv){
 		}
 
 		//tracking values for loop
-		int playergo[5] = {1, 1, 1, 1, 1};
+		int playergo[5] = {1, 1, 1, 1, 1};// 1 means hit & 0 means fold
 		int scoremod[5] = {0, 0, 0, 0, 0};
+		char valueOfQ='h';//char representation for question assume h intially
+		int  iValueOfQ=1; //comparaing result of valueOfQ to adjust to playergo which determines if it holds or hits assume 1 intially
 
 		//game/turn loop
 		int contgame = playersuse - 1;
-		int loopnum = 0;
+		int loopnum = 0;//what number of loop we are on for first loop we don't want to ask for hit or fold
 		while(contgame){
-			
 			//refresh continue condition
 			contgame = playersuse - 1;
+			if(loopnum>0){
+				for(int i=1;i<playersuse;i++){
+					printf("%s %d %s\n","Player",playergo[i]," enter h or f for hit or fold");
+				        scanf("%s",&valueOfQ);
+					if(valueOfQ=='h'){
+						iValueOfQ=1;//update value
+						playergo[i]=iValueOfQ;//updates the value of playergo array
+
+					}
+					else{
+						 iValueOfQ=0;//update value
+						 playergo[i]=iValueOfQ;//updates the value of playergo array
+					}
+				}
+			}
 
 			//deal cards:
 			//deal to dealer (First loop only until all players are fold/bust)
