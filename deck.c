@@ -92,3 +92,8 @@ void printRestOfDeck(Card **shuffled) {
 done:
     return;
 }
+
+//resets card index
+void resetIndex(){
+    cardIndex = 0;
+}
