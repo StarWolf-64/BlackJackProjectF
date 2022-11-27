@@ -29,11 +29,16 @@ int main(int argc, char **argv){
 	int loopcount = 0; //test code
 
 
+	//other variables
+	int remaining = 52; //number of remaining cards in shuffled
+
 	//main game loop
 	while(gamego){
 		//if(){//
 		//}
 		//shuffle deck each game and reset player values
+		initCard();
+		initDeck(deck);
 		shuffleDeck(shuffled, deck);
 		for(int i = 0; i < playersuse; i++){
 			players[i].hand.cardsInHand = 0;
@@ -71,12 +76,14 @@ int main(int argc, char **argv){
 			//deal to dealer (First loop only until all players are fold/bust)
 			if(loopnum == 0){
 				deal(shuffled, &players[0].hand, 2);
+				remaining -= 2;
 			}
 
 			//deal to players
 			for(int i = 1; i < playersuse; i++){
 				if(loopnum == 0){
 					deal(shuffled, &players[i].hand, 2);
+					remaining -= 2;
 				}
 				else{
 					Hand *hand0 = &players[i].hand;
@@ -84,6 +91,7 @@ int main(int argc, char **argv){
 					//printf("Cards: %d\n", players[i].hand.cardsInHand);
 					players[i].hand.cardsInHand++;
 					//printf("Cards NEW: %d\n", players[i].hand.cardsInHand);
+					remaining--;
 				}
 
 				//test print
@@ -119,9 +127,24 @@ int main(int argc, char **argv){
 			if(loopnum > 5){
 				contgame = 0;
 			}
-		}
 
-		//test code
+			printRestOfDeck(shuffled);
+		}
+	
+		/*
+		//return hands to shuffled deck (don't worry it will get re shuffled again before dealing)
+		for(int i = 0; i < playersuse; i++){
+			for(int j = 0; j < players[i].hand.cardsInHand; j++){
+				shuffled[remaining] = players[i].hand.cards[j];
+				remaining++;
+			}
+		}
+		*/
+
+		resetIndex();
+		remaining = 52;
+
+		//score modulation
 		for(int i = 1; i < playersuse; i++){
 			printf("player %d score = %d\n", i, players[i].score);
 			if(scoremod[i] == 1){
