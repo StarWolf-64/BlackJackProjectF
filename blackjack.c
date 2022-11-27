@@ -27,6 +27,37 @@ int main(int argc, char **argv){
 	int gamego = 1; //while loop condition statement
 	int playersuse = 2; //minimum 2 players, first player is always dealer
 	int loopcount = 0; //test code
+	//this determines the amount of players who will play the game
+	int playerNum;
+	printf("How many human players do you want? Please enter a number from 1-4\n");//prompt for user input
+	scanf("%d",&playerNum);//store user input
+	switch(playerNum){
+		case 1:
+			printf("You have 1 human player\n");//you have 1 human players (keep in mind dealer always plays)
+			playerNum++;
+			playersuse=playerNum;
+			break;
+		case 2:
+		        printf("You have 2 human players\n");//you have 2 human players
+			playerNum++;
+			playersuse=playerNum;
+			break;
+		case 3:
+		        printf("You have 3 human players\n");//you have 3 human players
+			playerNum++;
+			playersuse=playerNum;
+			break;
+		case 4:
+			printf("You have 4 human players\n");//you have 4 human players
+			playerNum++;
+			playersuse=playerNum;
+			break;
+		default:
+			printf("You entered invalid input try again ya silly goose :<\n");
+			exit(-1);
+
+	}
+
 
 
 	//other variables
