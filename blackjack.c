@@ -58,7 +58,7 @@ int main(int argc, char **argv){
 			contgame = playersuse - 1;
 			if(loopnum>0){
 				for(int i=1;i<playersuse;i++){
-					printf("%s %d %s\n","Player",playergo[i]," enter h or f for hit or fold");
+					printf("%s %d %s\n","Player ", i, " enter h or f for hit or fold");
 				        scanf("%s",&valueOfQ);
 					if(valueOfQ=='h'){
 						iValueOfQ=1;//update value
@@ -77,6 +77,22 @@ int main(int argc, char **argv){
 			if(loopnum == 0){
 				deal(shuffled, &players[0].hand, 2);
 				remaining -= 2;
+				printf("The Dealer's cards:\n");
+				Card *c = players[0].hand.cards[0];
+				c->hidden = 1;
+				c->selected = 1;
+				printPartOfCard(c, 0);
+				printf("\n");
+				printPartOfCard(c, 1);
+				printf("\n");
+				printPartOfCard(c, 2);
+				//printf("\n");
+				c->hidden = 0;
+				c->selected = 0;
+				//printCards(players[0].hand.cards, 1, 2);
+				Card *c2 = players[0].hand.cards[1];
+				printCard(c2, "\n");
+
 			}
 
 			//deal to players
@@ -85,7 +101,7 @@ int main(int argc, char **argv){
 					deal(shuffled, &players[i].hand, 2);
 					remaining -= 2;
 				}
-				else{
+				else if(loopnum > 0 && playergo[i] == 1){
 					Hand *hand0 = &players[i].hand;
 					hand0->cards[players[i].hand.cardsInHand] = draw(shuffled);
 					//printf("Cards: %d\n", players[i].hand.cardsInHand);
@@ -128,7 +144,7 @@ int main(int argc, char **argv){
 				contgame = 0;
 			}
 
-			printRestOfDeck(shuffled);
+			//printRestOfDeck(shuffled);
 		}
 	
 		/*
