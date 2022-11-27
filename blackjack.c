@@ -112,7 +112,8 @@ int main(int argc, char **argv){
 
 			printRestOfDeck(shuffled);
 		}
-
+	
+		/*
 		//return hands to shuffled deck (don't worry it will get re shuffled again before dealing)
 		for(int i = 0; i < playersuse; i++){
 			for(int j = 0; j < players[i].hand.cardsInHand; j++){
@@ -120,8 +121,10 @@ int main(int argc, char **argv){
 				remaining++;
 			}
 		}
+		*/
 
 		resetIndex();
+		remaining = 52;
 
 		//score modulation
 		for(int i = 1; i < playersuse; i++){
