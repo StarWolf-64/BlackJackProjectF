@@ -71,8 +71,20 @@ int main(int argc, char **argv){
 	//other variables
 	int remaining = 52; //number of remaining cards in shuffled
 	int bet[5] = {100, 100, 100, 100, 100}; //bets and starting value
+	int betvalue;
 
 	//put something here to prompt players for their starting bets
+	for(int i=1;i<playersuse;i++){
+		printf("What you want your starting bets to be use a number between 10-500\n");//starting bet question
+		scanf("%d",&betvalue);//stores the value of the starting bet
+		if(betvalue<=500 && betvalue>=10){//if number is between 10 and 500
+			//change the value of their bet dependent on value entered
+			bet[i]=betvalue;
+		}
+		else{
+			printf("You did not enter a bet value that was in the range. Your starting bet value remains at a value of 100\n");
+		}
+	}
 
 	//main game loop
 	while(gamego){
@@ -104,7 +116,7 @@ int main(int argc, char **argv){
 			if(loopnum>0){
 				for(int i=1;i<playersuse;i++){
 					if(playergo[i] != 0){
-						printf("%s %d %s\n","Player ", i, " enter h or f for hit or fold");
+						printf("%s %d %s\n","Player ", i, " enter h or f for hit or fold\n");
 					        scanf("%s",&valueOfQ);
 						if(valueOfQ=='h'){
 							iValueOfQ=1;//update value
