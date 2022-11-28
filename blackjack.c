@@ -1,4 +1,5 @@
 //Bryan Potts, Nahom Tilahun
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <locale.h> //unicode
@@ -15,6 +16,7 @@ Card deck[DECK_SIZE];
 Card *shuffled[DECK_SIZE];
 
 int main(int argc, char **argv){
+
 	printf("%s",RESET_COLOR); //default color
 	initCard(); // set up unicode printing
 	initDeck(deck);// makes the memory for the deck
@@ -220,11 +222,15 @@ int main(int argc, char **argv){
 		loopcount++;
 
 	}
-
+	 //code to store the value of highscores into the a text file
+	char *filename = "highscore.txt";//the text file to be created
+       	FILE *fp=fopen(filename,"a");//it will read and write to the file and if it doesn't exist and append to file	                                
 	printf("GAME OVER\n");
 	printf("Final scores:\n");
 	for(int i = 1; i < playersuse; i++){
         	printf("player %d score = %d\n", i, players[i].score);
+		scanf("%d",&players[i].score);
+		fprintf(fp,"%d",players[i].score);
         }
-
+	fclose(fp);
 }
