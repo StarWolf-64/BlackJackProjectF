@@ -31,6 +31,10 @@ int main(int argc, char **argv){
 	printf("	|____/|_|\\__,_|\\___|_|\\_\\___/ \\__,_|\\___|_|\\_\\    \n");
 	printf("\n\n");
 
+	//display game rules
+	printf("Standard Blackjack rules with no double down, no split, dealer wins on tie\n");
+	printf("All bets between 10-500, bets over remaining score is the same as All-in\n\n");
+	
 	//game loop ending conditions
 	int gamego = 1; //while loop condition statement
 	int playersuse = 2; //minimum 2 players, first player is always dealer
@@ -76,11 +80,11 @@ int main(int argc, char **argv){
 
 	//main game loop
 	while(gamego){
-		//if(){//
-		//}
+		system("clear");
+		
 		//shuffle deck each game and reset player values
-		initCard();
-		initDeck(deck);
+		//initCard();
+		//initDeck(deck);
 		shuffleDeck(shuffled, deck);
 		for(int i = 0; i < playersuse; i++){
 			players[i].hand.cardsInHand = 0;
@@ -422,7 +426,7 @@ int main(int argc, char **argv){
 				gamego = 0;
 				break;
 		}
-		printf("loop iteration %d\n", loopcount);
+		//printf("loop iteration %d\n", loopcount);
 		loopcount++;
 
 	}
