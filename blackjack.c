@@ -23,7 +23,13 @@ int main(int argc, char **argv){
 	shuffleDeck(shuffled, deck); //shuffledeck shuffles the deck
 	playersInit();
 	system("clear"); //clear console
-	printf("Game start\n");
+	printf("Welcome to\n\n");
+	printf("	 ____  _            _       _            _        \n");
+	printf("	| __ )| | __ _  ___| | __  | | __ _  ___| | __    \n");
+	printf("	|  _ \\| |/ _` |/ __| |/ /  | |/ _` |/ __| |/ /    \n");
+	printf("	| |_) | | (_| | (__|   < |_| | (_| | (__|   <     \n");
+	printf("	|____/|_|\\__,_|\\___|_|\\_\\___/ \\__,_|\\___|_|\\_\\    \n");
+	printf("\n\n");
 
 	//game loop ending conditions
 	int gamego = 1; //while loop condition statement
@@ -64,6 +70,9 @@ int main(int argc, char **argv){
 
 	//other variables
 	int remaining = 52; //number of remaining cards in shuffled
+	int bet[5] = {100, 100, 100, 100, 100}; //bets and starting value
+
+	//put something here to prompt players for their starting bets
 
 	//main game loop
 	while(gamego){
@@ -171,12 +180,30 @@ int main(int argc, char **argv){
 
 			//player fold/bust condition
 			for(int i = 1; i < playersuse; i++){
+				int hasace = 0;
 				int cardsum = 0;
 				for(int j = 0; j < players[i].hand.cardsInHand; j++){
-					cardsum += players[i].hand.cards[j]->value;
+					int tempval = players[i].hand.cards[j]->value;
+					if(tempval == 1){
+						int tempsum = cardsum;
+						tempsum += 11;
+						if(tempsum > 21){
+							cardsum += 1; //ace partial value
+						}
+						else{
+							cardsum += 11; //ace full value
+							hasace++;
+						}
+					}
+					else if(tempval > 10){
+						cardsum += 10;
+					}
+					else{
+						cardsum += players[i].hand.cards[j]->value;
+					}
 				}
 				
-				printf("sum: %d\n", cardsum);
+				printf("The sum of Player %d's hand is: %d\n", i ,cardsum);
 				playersums[i] = cardsum;
 
 				if(cardsum == 21){
@@ -185,9 +212,18 @@ int main(int argc, char **argv){
 					//scoremod[i] = 1;
 				}
 				else if(cardsum > 21){
-					contgame--;
-					playergo[i] = 0;
-					//scoremod[i] = 0;
+					while((cardsum > 21) && (hasace > 0)){
+						//switches full value aces to small value if bust
+						cardsum -= 10;
+						hasace--;
+					}
+			
+					//if still over 21 then bust
+					if(cardsum > 21){
+						contgame--;
+						playergo[i] = 0;
+						//scoremod[i] = 0;
+					}
 				}
 				else if(cardsum < 21 && playergo[i] == 0){
 					contgame--;
@@ -229,16 +265,47 @@ int main(int argc, char **argv){
 				}
 
 				//draw until sum is greater than or equal to 16
+				int dealerace = 0;
 				while(dealersum < 16){
 					//printf("dealersum: %d\n", dealersum);
 					Hand *hand0 = &players[0].hand;   
 					hand0->cards[players[0].hand.cardsInHand] = draw(shuffled);
-					dealersum += players[0].hand.cards[players[0].hand.cardsInHand]->value;
+
+					//display new card
+					printf("Dealer draws a card:\n");
+					players[0].hand.cards[players[0].hand.cardsInHand]->hidden = 0;
+					printCard(players[0].hand.cards[players[0].hand.cardsInHand], "\n");
+
+					//calculate new card sum
+					int cardval = players[0].hand.cards[players[0].hand.cardsInHand]->value;
+					if(cardval == 1){
+						int tempcalc = dealersum;
+						tempcalc += 11;
+						if(tempcalc > 21){
+							dealersum += 1;	//ace smaller value to prevent bust
+						}
+						else{
+							dealersum += 11; //ace full value
+							dealerace++;
+						}
+					}
+					else if(cardval > 10){
+						dealersum += 10;
+					}
+					else{
+						dealersum += players[0].hand.cards[players[0].hand.cardsInHand]->value;
+					}
 					players[0].hand.cardsInHand++;
+
+					//if dealer bust and has ace, reduce ace value
+					while((dealersum > 21) && (dealerace > 0)){
+						dealersum -= 10;
+						dealerace--;
+					}
 					
 				}
 
-				printf("dealersum: %d\n", dealersum);
+				printf("The sum of the dealer's cards is: %d\n", dealersum);
 
 			}
 
@@ -268,6 +335,10 @@ int main(int argc, char **argv){
 						if(playersums[i] > dealersum){
 							scoremod[i] = 1;
 							printf("Player %d has a greater hand than the Dealer. Player %d wins!\n",i,i);
+						}
+						else if(playersums[i] == dealersum){ 
+							scoremod[i] = 0;   
+							printf("Player %d has an equal hand to the Dealer. Dealer wins.\n",i);
 						}
 						else{
 							scoremod[i] = 0;
@@ -308,18 +379,18 @@ int main(int argc, char **argv){
 
 		//score modulation
 		for(int i = 1; i < playersuse; i++){
-			printf("player %d score = %d\n", i, players[i].score);
+			//printf("player %d score = %d\n", i, players[i].score);
 			if(scoremod[i] == 1){
-				players[i].score = players[i].score + 50;
+				players[i].score = players[i].score + bet[i];
 			}
 			else if(scoremod[i] == 0){
-				players[i].score = players[i].score - 50;
+				players[i].score = players[i].score - bet[i];
 			}
 			else if(scoremod[i] == 2){
 				//natural 21
-				players[i].score = players[i].score + (50 * 2.5);
+				players[i].score = players[i].score + (bet[i] * 2.5);
 			}
-			printf("player %d new score = %d\n", i, players[i].score);
+			printf("player %d's score = %d\n", i, players[i].score);
 		}
 
 		//get sum of all player scores
@@ -339,6 +410,7 @@ int main(int argc, char **argv){
 		loopcount++;
 
 	}
+
 	 //code to store the value of highscores into the a text file
 	char *filename = "highscore.txt";//the text file to be created
        	FILE *fp=fopen(filename,"a");//it will read and write to the file and if it doesn't exist and append to file	                                
