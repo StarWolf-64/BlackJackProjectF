@@ -117,6 +117,7 @@ int main(int argc, char **argv){
 						}
 					}
 				}
+
 			}
 
 			//deal cards:
@@ -406,6 +407,21 @@ int main(int argc, char **argv){
 		}
 		
 		//test code
+		//player input for quitting, raising bet
+		int betOrQ;
+		printf("Do you want to quit the game or raise your bet?Enter 1 for changing bet & 2 to quit the game.\n");
+		scanf("%d",&betOrQ);//store user input if you
+		switch(betOrQ){
+			case 1://Todo as the functionality for bet has not been created yet
+				break;
+			case 2://Quit condition
+				gamego = 0;//you want to change value of gamego to quit the game
+				break;
+			default:
+			       	printf("You entered invalid input dude. For the next time please put in valid input :)\n");
+				gamego = 0;
+				break;
+		}
 		printf("loop iteration %d\n", loopcount);
 		loopcount++;
 
