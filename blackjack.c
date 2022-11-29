@@ -460,14 +460,14 @@ int main(int argc, char **argv){
 	}
 
 	 //code to store the value of highscores into the a text file
-	char *filename = "highscore.txt";//the text file to be created
-       	FILE *fp=fopen(filename,"a");//it will read and write to the file and if it doesn't exist and append to file	                                
+	//char *filename = "highscore.txt";//the text file to be created
+       //FILE *fp=fopen(filename,"a");//it will read and write to the file and if it doesn't exist and append to file	                                
 	printf("GAME OVER\n");
 	printf("Final scores:\n");
 	for(int i = 1; i < playersuse; i++){
         	printf("player %d score = %d\n", i, players[i].score);
-		scanf("%d",&players[i].score);
-		fprintf(fp,"%d",players[i].score);
+		//scanf("%d",&players[i].score);
+		//fprintf(fp,"%d",players[i].score);
         }
-	fclose(fp);
+	//fclose(fp);
 }
