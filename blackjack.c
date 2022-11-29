@@ -79,7 +79,7 @@ int main(int argc, char **argv){
 
 	//put something here to prompt players for their starting bets
 	for(int i=1;i<playersuse;i++){
-		printf("What you want your starting bets to be use a number between 10-500\n");//starting bet question
+		printf("Player %d, What do you want your starting bet to be. Use a number between 10-500\n", i);//starting bet question
 		scanf("%d",&betvalue);//stores the value of the starting bet
 		if(betvalue<=500 && betvalue>=10){//if number is between 10 and 500
 			//change the value of their bet dependent on value entered
