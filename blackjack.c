@@ -435,6 +435,8 @@ int main(int argc, char **argv){
 		for(int i=1;i<playersuse;i++){
 		printf("Do you want to quit the game,keep your bet the same or change your bet?Enter 1 for changing bet, 2 to quit & 3 to not change the bet.\n");
 		scanf("%d",&betOrQ);//store user input if you
+		if(gamego!=0){
+		
 		switch(betOrQ){
 			case 1://change bet condition 
 			       	printf("Player %d, What do you want to change your bet to. Use a number between 10-500\n", i);//changed bet
@@ -457,6 +459,7 @@ int main(int argc, char **argv){
 				break;
 		}
 			   }
+		}
 		//printf("loop iteration %d\n", loopcount);
 		loopcount++;
 
