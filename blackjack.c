@@ -432,7 +432,7 @@ int main(int argc, char **argv){
 		switch(betOrQ){
 			case 1://change bet condition 
 			       	printf("Player %d, What do you want to change your bet to. Use a number between 10-500\n", i);//changed bet
-				scanf("%d",&changedBet;);//stores the value of changed bet
+				scanf("%d",&changedBet);//stores the value of changed bet
 				if(changedBet<=500 && changedBet>=10){
 					bet[i]=changedBet;
 				}
