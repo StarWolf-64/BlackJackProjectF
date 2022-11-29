@@ -407,6 +407,12 @@ int main(int argc, char **argv){
 				//natural 21
 				players[i].score = players[i].score + (bet[i] * 2.5);
 			}
+
+			//convert negative scores to 0
+			if(players[i].score < 0){
+				players[i].score = 0;
+			}
+
 			printf("player %d's score = %d\n", i, players[i].score);
 		}
 
@@ -417,7 +423,7 @@ int main(int argc, char **argv){
 		}
 
 		//end while loop check
-		int endcheck = 10 * playersuse;
+		int endcheck = 10 * (playersuse - 1);
 		if(scoresum <  endcheck){
 			gamego = 0;
 		}
