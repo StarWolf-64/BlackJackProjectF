@@ -431,19 +431,32 @@ int main(int argc, char **argv){
 		//test code
 		//player input for quitting, raising bet
 		int betOrQ;
-		printf("Do you want to quit the game or raise your bet?Enter 1 for changing bet & 2 to quit the game.\n");
+		int changedBet;
+		for(int i=1;i<playersuse;i++){
+		printf("Do you want to quit the game,keep your bet the same or change your bet?Enter 1 for changing bet, 2 to quit & 3 to not change the bet.\n");
 		scanf("%d",&betOrQ);//store user input if you
 		switch(betOrQ){
-			case 1://Todo as the functionality for bet has not been created yet
+			case 1://change bet condition 
+			       	printf("Player %d, What do you want to change your bet to. Use a number between 10-500\n", i);//changed bet
+				scanf("%d",&changedBet);//stores the value of changed bet
+				if(changedBet<=500 && changedBet>=10){
+					bet[i]=changedBet;
+				}
+				else{
+					printf("You did not input a bet value in the range. Your bet value was not changed.");
+				}
+				
 				break;
 			case 2://Quit condition
 				gamego = 0;//you want to change value of gamego to quit the game
 				break;
-			default:
+			case 3://you want the bet the same
+				break;
+			default://you gave bad input
 			       	printf("You entered invalid input dude. For the next time please put in valid input :)\n");
-				gamego = 0;
 				break;
 		}
+			   }
 		//printf("loop iteration %d\n", loopcount);
 		loopcount++;
 
